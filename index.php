@@ -17,9 +17,30 @@ error_reporting(E_ALL);
 
         <?php if (isset($_GET['video'])) { ?>
             <!-- Display Player -->
-            <video controls>
+            <video id="player" controls>
                 <source src="<?php echo $_GET['video'] ?>" type="video/mp4">
-            </video>
+            </video><br>
+            <button id="com-destroy">Commercial Destroyer</button>
+            <button id="fix">Fix</button>
+            <script>
+             var video = document.getElementById("player");
+             var comF = function() {
+                 video.currentTime = video.currentTime + 30;
+             };
+             var comB = function() {
+                 video.currentTime = video.currentTime - 5;
+             };
+             
+             document.getElementById("com-destroy").onclick = comF;
+             document.getElementById("fix").onclick = comB;
+             document.onkeypress = function(e) {
+                 if      (e.charCode == 44) comB();
+                 else if (e.charCode == 46) comF();
+             }
+
+
+            </script>
+            
 
         <?php } else { ?>
             <!-- Display Table -->
