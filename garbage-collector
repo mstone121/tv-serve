@@ -1,0 +1,32 @@
+#!/bin/zsh
+
+month=$(( 60 * 60 * 24 * 30 ))
+for file in /tv/movies/trash/*
+do
+
+    epoch=`stat -c %Y $file`
+    diff=$(( `date +%s` - epoch ))
+
+    if [ $diff -gt $month ]
+    then
+
+        rm $file
+
+    fi  
+    
+done
+
+for file in /tv/logs/*
+do
+
+    epoch=`stat -c %Y $file`
+    diff=$(( `date +%s` - epoch ))
+
+    if [ $diff -gt $month ]
+    then
+
+        rm $file
+
+    fi  
+    
+done
