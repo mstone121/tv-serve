@@ -36,25 +36,27 @@ function displayPlayer() { ?>
         <source src="<?php echo $_GET['video'] ?>" type="video/mp4">
     </video><br>
     
-    <button id="com-destroy">Commercial Destroyer</button>
+    <button id="commercial-destroy">Commercial Destroyer</button>
     <button id="fix">Fix</button>
     
     <script>
      var video = document.getElementById("player");
      
-     var comF = function() {
-         video.currentTime = video.currentTime + 31;
-     };
-     var comB = function() {
+     var commercialBack = function() {
          video.currentTime = video.currentTime - 5;
      };
+     var commercialDestroy = function() {
+         video.currentTime = video.currentTime + 31;
+     };
+     };
      
-     document.getElementById("com-destroy").onclick = comF;
-     document.getElementById("fix").onclick = comB;
+     document.getElementById("commercial-destroy").onclick = commercialDestroy;
+     document.getElementById("fix").onclick = commercialBack;
      
-     document.onkeypress = function(e) {
-         if      (e.charCode == 44) comB();
-         else if (e.charCode == 46) comF();
+     document.onkeypress = function({ charCode: code }) {
+         if      (code === 44) commercialBack();
+         else if (code === 46) commercialDestroy();
+         
      }
 
     </script>
