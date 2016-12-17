@@ -48,7 +48,25 @@ function displayPlayer() { ?>
      const commercialDestroy = function() {
          video.currentTime = video.currentTime + 31;
      };
+     const rewind = function(seconds) {
+         video.currentTime = video.currentTime - seconds;
      };
+     const pause = function() {
+         if (video.paused) {
+             video.play();
+         } else {
+             video.pause();
+         }
+     }
+     const fullScreen = function() {
+         if (video.requestFullscreen) {
+             video.requestFullscreen();
+         } else if (video.mozRequestFullScreen) {
+             video.mozRequestFullScreen();
+         } else if (video.webkitRequestFullscreen) {
+             video.webkitRequestFullscreen();
+         }
+     }
      
      document.getElementById("commercial-destroy").onclick = commercialDestroy;
      document.getElementById("fix").onclick = commercialBack;
@@ -56,6 +74,9 @@ function displayPlayer() { ?>
      document.onkeypress = function({ charCode: code }) {
          if      (code === 44) commercialBack();
          else if (code === 46) commercialDestroy();
+         else if (code > 48 && code < 58) rewind(code - 48);
+         else if (code === 32) pause();
+         else if (code === 13) fullScreen();
          
      }
 
