@@ -93,7 +93,7 @@ function displayPlayer() { ?>
 
         <?php
         if (isset($_GET['video'])) {
-            if (isset($_GET['delete']) && $_GET['delete'] == 'yes') {
+            if (isset($_GET['delete']) && $_GET['delete'] === 'yes') {
                 // Delete video
                 rename($_GET['video'], "movies/trash/" . substr($_GET['video'], 7));
                 header("Location: http://mtv/tv-serve");
