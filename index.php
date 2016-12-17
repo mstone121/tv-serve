@@ -14,7 +14,7 @@ function displayTable() { ?>
             <td></td>
         </th>
         
-        <?php foreach (glob('/tv/movies/*.mp4') as $video) { ?>
+        <?php foreach (glob('movies/*.mp4') as $video) { ?>
             <tr>
                 <td>
                     <a href="<?php echo "?video=" . urlencode("movies/" . basename($video)); ?>">
