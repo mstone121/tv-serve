@@ -40,12 +40,12 @@ function displayPlayer() { ?>
     <button id="fix">Fix</button>
     
     <script>
-     var video = document.getElementById("player");
+     const video = document.getElementById("player");
      
-     var commercialBack = function() {
+     const commercialBack = function() {
          video.currentTime = video.currentTime - 5;
      };
-     var commercialDestroy = function() {
+     const commercialDestroy = function() {
          video.currentTime = video.currentTime + 31;
      };
      };
