@@ -9,25 +9,28 @@ error_reporting(E_ALL);
 function displayTable() { ?>
     <h3>TV Serve</h3><br>
     <table>
-        <th>
-            <td>File Name</td>
-            <td></td>
-        </th>
-        
-        <?php foreach (glob('movies/*.mp4') as $video) { ?>
+        <thead>
             <tr>
-                <td>
-                    <a href="<?php echo "?video=" . urlencode("movies/" . basename($video)); ?>">
-                        <?php echo(basename($video)); ?>
-                    </a>
-                </td>
-                <td>
-                    <a href="<?php echo "?video=" . urlencode("movies/" . basename($video)); ?>&delete=yes">
-                        Delete
-                    </a>
-                </td>
-            </tr>
-        <?php } ?>
+                <td>File Name</td>
+                <td></td>
+            </tr
+        </thead>
+        <tbody>
+            <?php foreach (glob('movies/*.mp4') as $video) { ?>
+                <tr>
+                    <td>
+                        <a href="<?php echo "?video=" . urlencode("movies/" . basename($video)); ?>">
+                            <?php echo(basename($video)); ?>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="<?php echo "?video=" . urlencode("movies/" . basename($video)); ?>&delete=yes">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            <?php } ?>
+        </tbody>
     </table>
 <?php }
 
@@ -96,7 +99,7 @@ function displayPlayer() { ?>
             if (isset($_GET['delete']) && $_GET['delete'] === 'yes') {
                 // Delete video
                 rename($_GET['video'], "movies/trash/" . substr($_GET['video'], 7));
-                header("Location: http://mtv/tv-serve");
+                header("Location: http://mtv");
                 die();
             } else {
                 echo '<h3>TV Serve</h3>';
