@@ -69,3 +69,10 @@ window.onkeypress = function({ charCode: code }) {
     else if (code === 13) fullScreen();
 };
 
+// Progress Bar
+function updateProgressBar() {
+    debugger;
+    $('div#player_container progress').val(
+        Math.floor((video.currentTime / video.duration) * 100)
+    );
+}
