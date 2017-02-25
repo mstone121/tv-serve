@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+WEBROOT=/var/www/html
+REPO_DIR=/tv
+MOVIE_DIR=/RandomShit/movies
+
+ln -s $REPO_DIR/index.php $WEBROOT/index.php
+ln -s $REPO_DIR/scripts.js $WEBROOT/scripts.js
+ln -s $REPO_DIR/styles.css $WEBROOT/styles.css
+ln -s $MOVIE_DIR $WEBROOT/movies
