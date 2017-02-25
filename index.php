@@ -11,8 +11,8 @@ function displayTable() { ?>
     <table>
         <thead>
             <tr>
-                <td>File Name</td>
-                <td></td>
+                <th>File Name</th>
+                <th></th>
             </tr
         </thead>
         <tbody>
@@ -35,61 +35,30 @@ function displayTable() { ?>
 <?php }
 
 function displayPlayer() { ?>
-    <video id="player" controls>
-        <source src="<?php echo $_GET['video'] ?>" type="video/mp4">
-    </video><br>
-    
+    <div id="player_container">
+        <video id="player">
+            <source src="<?php echo $_GET['video'] ?>" type="video/mp4">
+        </video><br>
+        <progress value="0" max="100" />
+    </div><br><br>
+
     <button id="commercial-destroy">Commercial Destroyer</button>
     <button id="fix">Fix</button>
-    
-    <script>
-     const video = document.getElementById("player");
-     
-     const commercialBack = function() {
-         video.currentTime = video.currentTime - 5;
-     };
-     const commercialDestroy = function() {
-         video.currentTime = video.currentTime + 31;
-     };
-     const rewind = function(seconds) {
-         video.currentTime = video.currentTime - seconds;
-     };
-     const pause = function() {
-         if (video.paused) {
-             video.play();
-         } else {
-             video.pause();
-         }
-     }
-     const fullScreen = function() {
-         if (video.requestFullscreen) {
-             video.requestFullscreen();
-         } else if (video.mozRequestFullScreen) {
-             video.mozRequestFullScreen();
-         } else if (video.webkitRequestFullscreen) {
-             video.webkitRequestFullscreen();
-         }
-     }
-     
-     document.getElementById("commercial-destroy").onclick = commercialDestroy;
-     document.getElementById("fix").onclick = commercialBack;
-     
-     document.onkeypress = function({ charCode: code }) {
-         if      (code === 44) commercialBack();
-         else if (code === 46) commercialDestroy();
-         else if (code > 48 && code < 58) rewind(code - 48);
-         else if (code === 32) pause();
-         else if (code === 13) fullScreen();
-         
-     }
-
-    </script>
-<?php } ?>    
+<?php } ?>
 
 <!-- Begin Page -->
 <html>
     <head>
         <title>TV Serve</title>
+
+        <!-- Styles -->
+        <link href="https://fonts.googleapis.com/css?family=Geostar" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
+
+        <!-- Scripts -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="scripts.js"></script>
+
     </head>
     
     <body>
