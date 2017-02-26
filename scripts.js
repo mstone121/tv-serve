@@ -4,10 +4,10 @@ let video;
 
 window.onload = function() {
     video = document.getElementById("player");
+    if (video) video.ontimeupdate = updateProgressBar;
 
     $("#commercial-destroy").click(commercialDestroy);
     $("#fix").click(commercialBack);
-    video.ontimeupdate = updateProgressBar;
 
     $("h3").each(function(index, element) {
         const jElement = $(element);
