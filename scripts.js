@@ -71,7 +71,6 @@ window.onkeypress = function({ charCode: code }) {
 
 // Progress Bar
 function updateProgressBar() {
-    debugger;
     $('div#player_container progress').val(
         Math.floor((video.currentTime / video.duration) * 100)
     );
