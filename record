@@ -4,4 +4,4 @@ timeout --foreground -s STOP -k 5s $2 mplayer -dumpstream -dumpfile /tv/movies/$
 
 sleep 1m
 
-ffmpeg -y -i /tv/movies/$3.ts -vcodec h264 -acodec aac -strict -2 /tv/movies/`date -I`_$3.mp4 >> /tv/logs/`date -I`_$3_ffmpeg 2>&1
+avconv -y -i /tv/movies/$3.ts -vcodec h264 -acodec aac -strict -2 /tv/movies/`date -I`_$3.mp4 >> /tv/logs/`date -I`_$3_avconv 2>&1
