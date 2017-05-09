@@ -48,6 +48,7 @@ function displayPlayer() { ?>
 <!-- Begin Page -->
 <html>
     <head>
+
         <title>TV Serve</title>
 
         <!-- Styles -->
@@ -76,9 +77,7 @@ function displayPlayer() { ?>
             } } else {
                 // Display Table
                 displayTable();
-        }
-
-        ?>
+        } ?>
 
     </body>
 </html>
