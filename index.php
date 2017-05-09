@@ -57,19 +57,28 @@ function displayPlayer() { ?>
         <!-- Scripts -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="scripts.js"></script>
+
     </head>
     
     <body>
-        <?php if (isset($_GET['video'])) {
+
+        <?php
+        if (isset($_GET['video'])) {
             if (isset($_GET['delete']) && $_GET['delete'] === 'yes') {
                 // Delete video
                 rename($_GET['video'], "movies/trash/" . substr($_GET['video'], 7));
-            }
+                header("Location: http://mtv");
+                die();
+            } else {
+                echo '<h3>TV Serve</h3>';
+                // Display Player
+                displayPlayer();
+            } } else {
+                // Display Table
+                displayTable();
+        }
 
-            echo '<h3>TV Serve</h3>';
-            displayPlayer();
-        } else {
-            displayTable();
-        } ?>
+        ?>
+
     </body>
 </html>
