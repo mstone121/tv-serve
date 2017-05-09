@@ -4,7 +4,6 @@ let video;
 
 window.onload = function() {
     video = document.getElementById("player");
-    if (video) video.ontimeupdate = updateProgressBar;
 
     $("#commercial-destroy").click(commercialDestroy);
     $("#fix").click(commercialBack);
@@ -68,10 +67,3 @@ window.onkeypress = function({ charCode: code }) {
     else if (code === 32) pause();
     else if (code === 13) fullScreen();
 };
-
-// Progress Bar
-function updateProgressBar() {
-    $('div#player_container progress').val(
-        Math.floor((video.currentTime / video.duration) * 100)
-    );
-}

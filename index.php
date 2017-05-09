@@ -36,10 +36,9 @@ function displayTable() { ?>
 
 function displayPlayer() { ?>
     <div id="player_container">
-        <video id="player">
+        <video id="player" controls>
             <source src="<?php echo $_GET['video'] ?>" type="video/mp4">
         </video><br>
-        <progress value="0" max="100" />
     </div><br><br>
 
     <button id="commercial-destroy">Commercial Destroyer</button>
