@@ -19,7 +19,7 @@ window.onload = function() {
 
 function colorText(text, startHue, increment = 5, saturation = 90, lightness = 90) {
     let html = '';
-    for (const index in text) {
+    for (let index in text) {
         html += [
             '<span style="color: hsl(', startHue,
             ', ', saturation, '%, ', lightness,
