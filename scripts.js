@@ -4,7 +4,6 @@ let video;
 
 window.onload = function() {
     video = document.getElementById("player");
-    if (video) video.ontimeupdate = updateProgressBar;
 
     $("#commercial-destroy").click(commercialDestroy);
     $("#fix").click(commercialBack);
@@ -20,7 +19,7 @@ window.onload = function() {
 
 function colorText(text, startHue, increment = 5, saturation = 90, lightness = 90) {
     let html = '';
-    for (let index in text) {
+    for (const index in text) {
         html += [
             '<span style="color: hsl(', startHue,
             ', ', saturation, '%, ', lightness,
@@ -68,11 +67,3 @@ window.onkeypress = function({ charCode: code }) {
     else if (code === 32) pause();
     else if (code === 13) fullScreen();
 };
-
-// Progress Bar
-function updateProgressBar() {
-    debugger;
-    $('div#player_container progress').val(
-        Math.floor((video.currentTime / video.duration) * 100)
-    );
-}
