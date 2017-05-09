@@ -1,5 +1,16 @@
 #!/bin/bash
 
+if [ -e /tv/killswitch ]
+then
+    exit
+fi
+
+
+if [ -e /tv/movies/$3.ts ]
+then
+    rm /tv/movies/$3.ts
+fi
+
 timeout --foreground -s STOP -k 5s $2 mplayer -dumpstream -dumpfile /tv/movies/$3.ts dvb://$1 >> /tv/logs/`date -I`_$3_record 2>&1
 
 sleep 1m
