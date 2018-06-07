@@ -1,32 +1,21 @@
 #!/bin/zsh
 
 month=$(( 60 * 60 * 24 * 30 ))
-for file in /tv/movies/trash/*
-do
 
-    epoch=`stat -c %Y $file`
-    diff=$(( `date +%s` - epoch ))
+collectTrash() {
+    for file in $1
+    do
+	epoch=`stat -c %Y $file`
+	diff=$(( `date +%s` - epoch ))
 
-    if [ $diff -gt $month ]
-    then
+	if [ $diff -gt $month ]
+	then
+	    echo "Removing $file"
+	    rm $file
+	fi
+    done
+}
 
-        rm $file
-
-    fi  
-    
-done
-
-for file in /tv/logs/*
-do
-
-    epoch=`stat -c %Y $file`
-    diff=$(( `date +%s` - epoch ))
-
-    if [ $diff -gt $month ]
-    then
-
-        rm $file
-
-    fi  
-    
-done
+collectTrash /tv/movies/trash/*
+collectTrash /tv/logs/*
+collectTrash /tv/movies/*.ts
