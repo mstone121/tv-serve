@@ -9,3 +9,4 @@ ln -s $REPO_DIR/scripts.js $WEBROOT/scripts.js
 ln -s $REPO_DIR/styles.css $WEBROOT/styles.css
 ln -s $MOVIE_DIR $WEBROOT/movies
 ln -s $MOVIE_DIR $REPO_DIR/movies
+ln -s $REPO_DIR/record.conf

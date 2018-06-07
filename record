@@ -5,14 +5,77 @@ then
     exit
 fi
 
+LOG_DIR=/dev/null
+MOVIES_DIR=`pwd`
+STEAL=false
+CC=false
 
-if [ -e /tv/movies/$3.ts ]
+CHANNEL=false
+TIME=false
+TITLE=false
+
+if [ -e /etc/record.conf ]
 then
-    rm /tv/movies/$3.ts
+    source /etc/record.conf
 fi
 
-timeout --foreground -s STOP -k 5s $2 mplayer -dumpstream -dumpfile /tv/movies/$3.ts dvb://$1 >> /tv/logs/`date -I`_$3_record 2>&1
+while [[ $# -gt 0 ]]
+do
+    key="$1"
 
-sleep 1m
+    case $key in
+	-s|--steal)
+	    STEAL=true
+	    shift
+	    ;;
 
-avconv -y -i /tv/movies/$3.ts -vcodec h264 -acodec aac -strict -2 /tv/movies/`date -I`_$3.mp4 >> /tv/logs/`date -I`_$3_avconv 2>&1
+	-c|--closed-captions)
+	    CC=true
+	    shift
+	    ;;
+	*)
+	    if [ $CHANNEL = false ]
+	    then
+		CHANNEL="$1"
+	    elif [ $TIME = false ]
+	    then
+		TIME="$1"
+	    elif [ $TITLE = false ]
+	    then
+		TITLE="$1"
+	    else
+		echo 'Too many arguments, exiting...'
+		exit 1
+	    fi
+	    shift
+	    ;;
+    esac
+done
+
+if ([ $CHANNEL = false ] || [ $TIME = false ] || [ $TITLE = false ])
+then
+    echo 'Not enough arguments, exiting...'
+    exit 1
+fi
+
+if [ $STEAL = true ]
+then
+    echo 'STEALING!!!!!!!!!!!!!!!!!!!';
+    pkill mplayer
+fi
+
+if [ -e "$MOVIES_DIR/$TITLE.ts" ]
+then
+    rm "$MOVIES_DIR/$TITLE.ts"
+fi
+
+timeout --foreground -s STOP -k 5s $TIME mplayer -dumpstream -dumpfile "$MOVIES_DIR/$TITLE.ts" dvb://$CHANNEL |& tee "$LOG_DIR/${TITLE}_record"
+
+sleep 5s
+
+avconv -y -i "$MOVIES_DIR/$TITLE.ts" -vcodec h264 -acodec aac -strict -2 "$MOVIES_DIR/$TITLE.mp4" |& tee "$LOG_DIR/${TITLE}_avconv"
+
+if [ $CC = true ]
+then
+    ffmpeg -y -f lavfi -i "movie=$MOVIES_DIR/$TITLE.ts[out+subcc]" "$MOVIES_DIR/${TITLE}_cc.srt" 2>&1 | tee "$LOG_DIR/${TITLE}_ffmpeg"
+fi
