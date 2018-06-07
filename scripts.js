@@ -7,26 +7,52 @@ window.onload = function() {
 
     $("#commercial-destroy").click(commercialDestroy);
     $("#fix").click(commercialBack);
+    $("#cheat_mode").click(function() {
+	$("#caption_box").show();
+
+	video.addEventListener("timeupdate", function(e) {
+	    let html = "";
+	    const offset = $("#cc_offset").val();
+	    const cTime = video.currentTime - offset;
+
+	    subtitles.forEach(function(subtitle) {
+		if (cTime >= subtitle.sTime && cTime <= subtitle.eTime) {
+		    html += subtitle.xml;
+		}
+	    });
+
+	    $("#caption_box div").html(html);
+	});
+    });
 
     $("h3").each(function(index, element) {
-        const jElement = $(element);
-        const text = jElement.text();
+	const jElement = $(element);
+	const text = jElement.text();
 
-        jElement.html('');
-        jElement.html(colorText(text, 0, 5, 90, 50));
+	jElement.html("");
+	jElement.html(colorText(text, 0, 5, 90, 50));
     });
+
+    $(".log pre").hide();
+    $("#caption_box").hide();
+
+    $(".log h4").click(function(event) {
+	$(event.currentTarget).next("pre").show();
+    });
+
+    const subtitles = JSON.parse($("#subtitles").text());
 };
 
 function colorText(text, startHue, increment = 5, saturation = 90, lightness = 90) {
-    let html = '';
+    let html = "";
     for (let index in text) {
-        html += [
-            '<span style="color: hsl(', startHue,
-            ', ', saturation, '%, ', lightness,
-            '%);">', text[index], '</span>'
-        ].join('');
+	html += [
+	    '<span style="color: hsl(', startHue,
+	    ', ', saturation, '%, ', lightness,
+	    '%);">', text[index], '</span>'
+	].join("");
 
-        startHue += increment;
+	startHue += increment;
     };
 
     return html;
@@ -44,18 +70,18 @@ function rewind(seconds) {
 }
 function pause() {
     if (video.paused) {
-        video.play();
+	video.play();
     } else {
-        video.pause();
+	video.pause();
     }
 }
 function fullScreen() {
     if (video.requestFullscreen) {
-        video.requestFullscreen();
+	video.requestFullscreen();
     } else if (video.mozRequestFullScreen) {
-        video.mozRequestFullScreen();
+	video.mozRequestFullScreen();
     } else if (video.webkitRequestFullscreen) {
-        video.webkitRequestFullscreen();
+	video.webkitRequestFullscreen();
     }
 }
 

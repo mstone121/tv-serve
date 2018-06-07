@@ -15,6 +15,10 @@ a {
     color: chartreuse;
 }
 
+.button {
+    border: 2px solid saddlebrown;
+}
+
 /* Video Table */
 
 th {
@@ -26,6 +30,7 @@ table {
     border: 4px ridge saddlebrown;
     border-collapse: collapse;
     margin: auto;
+    margin-bottom: 20px;
 }
 
 table td,th {
@@ -42,3 +47,35 @@ progress {
     height: 15px;
     -webkit-appearance: none;
 }
+
+.log {
+    border: 1px solid saddlebrown;
+    margin: auto;
+    margin-top: 10px;
+    max-width: 80%;
+    overflow: auto;
+    padding: 3px 3px 3px 3px;;
+    color: chartreuse;
+}
+
+.log h4:hover {
+    cursor: pointer;
+}
+
+.log pre {
+    text-align: left;
+}
+
+#subtitles {
+    display: none;
+}
+
+#caption_box {
+    min-height: 3em;
+}
+
+#caption_box input {
+    float: right;
+}
+
+/* Guide */
