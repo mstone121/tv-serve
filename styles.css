@@ -1,3 +1,6 @@
+* {
+    box-sizing: border-box;
+}
 body {
     background-color: dimgray;
     width: 100%;
@@ -71,10 +74,57 @@ progress {
 }
 
 #caption_box {
-    min-height: 3em;
+    height: 130px;
+    max-height: 130px;
+    padding: 20px 140px 20px 140px
 }
 
 #caption_box input {
+    margin-right: -100px;
+    float: right;
+}
+
+/* Subtitles */
+.subtitle {
+    text-aligh: right;
+}
+.ssa-an1 {
+    margin-top: 66px;
+    float: left;
+}
+
+.ssa-an2 {
+    margin-top: 66px;
+}
+
+.ssa-an3 {
+    margin-top: 66px;
+    float: right;
+}
+
+.ssa-an4 {
+    margin-top: 33px;
+    float: left;
+}
+
+.ssa-an5 {
+    margin-top: 33px;
+}
+
+.ssa-an6 {
+    margin-top: 33px;
+    float: right;
+}
+
+.ssa-an7 {
+    float: left;
+}
+
+.ssa-an8 {
+
+}
+
+.ssa-an9 {
     float: right;
 }
 

@@ -8,54 +8,69 @@ window.onload = function() {
     $("#commercial-destroy").click(commercialDestroy);
     $("#fix").click(commercialBack);
     $("#cheat_mode").click(function() {
-	$("#caption_box").show();
+        $("#caption_box").show();
 
-	video.addEventListener("timeupdate", function(e) {
-	    let html = "";
-	    const offset = $("#cc_offset").val();
-	    const cTime = video.currentTime - offset;
+        video.addEventListener("timeupdate", function(e) {
+            let html = "";
+            const offset = $("#cc_offset").val();
+            const cTime = video.currentTime - offset;
 
-	    subtitles.forEach(function(subtitle) {
-		if (cTime >= subtitle.sTime && cTime <= subtitle.eTime) {
-		    html += subtitle.xml;
-		}
-	    });
+            subtitles.forEach(function(subtitle) {
+                if (cTime >= subtitle.sTime && cTime <= subtitle.eTime) {
+                    html += subtitle.xml;
+                }
+            });
 
-	    $("#caption_box div").html(html);
-	});
+            $("#caption_box div").html(html);
+        });
     });
 
     $("h3").each(function(index, element) {
-	const jElement = $(element);
-	const text = jElement.text();
-
-	jElement.html("");
-	jElement.html(colorText(text, 0, 5, 90, 50));
+        colorText($(element), 0, 5, 90, 50);
     });
+    colorText($('#footer span'), 0, 5, 90, 50);
 
     $(".log pre").hide();
     $("#caption_box").hide();
 
     $(".log h4").click(function(event) {
-	$(event.currentTarget).next("pre").show();
+        $(event.currentTarget).next("pre").show();
     });
 
-    const subtitles = JSON.parse($("#subtitles").text());
+    const anRegex = /{\\an([1-9]{1})}/;
+    const subtitles = JSON.parse($("#subtitles").text() || '[]').map(function(subtitle) {
+        let xml = '<div class="subtitle">' + subtitle.xml;
+        xml = xml.replace(/\n/g,  "<br>");
+        xml = xml.replace(/\\h/g, "&nbsp;");
+
+        const match = anRegex.exec(xml);
+        if (match) {
+            xml = xml.replace('<div class="subtitle">', '<div class="subtitle ssa-an' + match[1] +'">')
+            xml = xml.replace(match[0], '');
+        }
+
+        xml += '</div>';
+
+        subtitle.xml = xml;
+        return subtitle;
+    });
 };
 
-function colorText(text, startHue, increment = 5, saturation = 90, lightness = 90) {
-    let html = "";
-    for (let index in text) {
-	html += [
-	    '<span style="color: hsl(', startHue,
-	    ', ', saturation, '%, ', lightness,
-	    '%);">', text[index], '</span>'
-	].join("");
+function colorText(element, startHue, increment = 5, saturation = 90, lightness = 90) {
+    let html = '';
+    const text = element.text();
 
-	startHue += increment;
+    for (let index in text) {
+        html += [
+            '<span style="color: hsl(', startHue,
+            ', ', saturation, '%, ', lightness,
+            '%);">', text[index], '</span>'
+        ].join("");
+
+        startHue += increment;
     };
 
-    return html;
+    element.html(html);
 }
 
 // Player Controls
