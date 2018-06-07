@@ -85,18 +85,18 @@ function rewind(seconds) {
 }
 function pause() {
     if (video.paused) {
-	video.play();
+        video.play();
     } else {
-	video.pause();
+        video.pause();
     }
 }
 function fullScreen() {
     if (video.requestFullscreen) {
-	video.requestFullscreen();
+        video.requestFullscreen();
     } else if (video.mozRequestFullScreen) {
-	video.mozRequestFullScreen();
+        video.mozRequestFullScreen();
     } else if (video.webkitRequestFullscreen) {
-	video.webkitRequestFullscreen();
+        video.webkitRequestFullscreen();
     }
 }
 
