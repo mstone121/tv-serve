@@ -6,6 +6,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+define('LOG_DIR', '/tv/logs');
+
 function displayTable() { ?>
     <table>
         <thead>
@@ -55,15 +57,15 @@ function displayPlayer() { ?>
     </div>
     <div class="log" id="mplayer_log">
         <h4>mplayer log</h4>
-        <pre><?php echo file_get_contents('logs/' . substr($_GET['video'], 0, -4) . '_record'); ?></pre>
+        <pre><?php echo file_get_contents(LOG_DIR . '/' . substr($_GET['video'], 0, -4) . '_record'); ?></pre>
     </div>
     <div class="log" id="avconv_log">
         <h4>avconv log</h4>
-        <pre><?php echo file_get_contents('logs/' . substr($_GET['video'], 0, -4) . '_avconv'); ?></pre>
+        <pre><?php echo file_get_contents(LOG_DIR . '/' . substr($_GET['video'], 0, -4) . '_avconv'); ?></pre>
     </div>
     <div class="log" id="ffmpeg_log">
         <h4>cc log</h4>
-        <pre><?php echo file_get_contents('logs/' . substr($_GET['video'], 0, -4) . '_ffmpeg'); ?></pre>
+        <pre><?php echo file_get_contents(LOG_DIR . '/' . substr($_GET['video'], 0, -4) . '_ffmpeg'); ?></pre>
     </div>
 
     <?php
@@ -114,6 +116,7 @@ function displayPlayer() { ?>
             if (isset($_GET['delete']) && $_GET['delete'] === 'yes') {
                 // Delete video
                 rename("movies/" . $_GET['video'], "movies/trash/" . $_GET['video']);
+                rename("movies/" . $_GET['video']. "_cc.srt", "movies/trash/" . $_GET['video'] . "_cc.srt");
                 header("Location: http://mtv");
                 die();
             } else {

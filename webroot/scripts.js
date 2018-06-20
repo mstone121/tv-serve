@@ -8,7 +8,7 @@ window.onload = function() {
     $("#commercial-destroy").click(commercialDestroy);
     $("#fix").click(commercialBack);
     $("#cheat_mode").click(function() {
-        $("#caption_box").show();
+        $("#caption_box").toggle();
 
         video.addEventListener("timeupdate", function(e) {
             let html = "";
@@ -34,7 +34,7 @@ window.onload = function() {
     $("#caption_box").hide();
 
     $(".log h4").click(function(event) {
-        $(event.currentTarget).next("pre").show();
+        $(event.currentTarget).next("pre").toggle();
     });
 
     const anRegex = /{\\an([1-9]{1})}/;

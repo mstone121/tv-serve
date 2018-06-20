@@ -5,17 +5,17 @@ month=$(( 60 * 60 * 24 * 30 ))
 collectTrash() {
     for file in $1
     do
-	epoch=`stat -c %Y $file`
-	diff=$(( `date +%s` - epoch ))
+        epoch=`stat -c %Y $file`
+        diff=$(( `date +%s` - epoch ))
 
-	if [ $diff -gt $month ]
-	then
-	    echo "Removing $file"
-	    rm $file
-	fi
+        if [ $diff -gt $month ]
+        then
+            echo "Removing $file"
+            rm $file
+        fi
     done
 }
 
-collectTrash /tv/movies/trash/*
+collectTrash /RandomShit/movies/trash/*
+collectTrash /RandomShit/movies/*.ts
 collectTrash /tv/logs/*
-collectTrash /tv/movies/*.ts
