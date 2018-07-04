@@ -133,5 +133,6 @@ function displayPlayer() { ?>
         <?php } ?>
 
         <p id="footer">Now with <span>SubStation Alpha</span> support!</p>
+        <div id="rebecca_purple" onclick="window.open('https://en.wikipedia.org/wiki/Eric_A._Meyer');"></div>
     </body>
 </html>
