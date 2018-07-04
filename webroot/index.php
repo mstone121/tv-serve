@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 
 define('LOG_DIR', '/tv/logs');
 
-function displayTable() { ?>
+function displayTable($videoRoot) { ?>
     <table>
         <thead>
             <tr>
@@ -17,7 +17,7 @@ function displayTable() { ?>
             </tr
         </thead>
         <tbody>
-            <?php foreach (glob('movies/*.mp4') as $video) { ?>
+            <?php foreach (glob($videoRoot . '/*.mp4') as $video) { ?>
                 <tr>
                     <td>
                         <a href="<?php echo "?video=" . urlencode(basename($video)); ?>">
@@ -124,9 +124,12 @@ function displayPlayer() { ?>
             }
         } else if (isset($_GET['guide']) && $_GET['guide'] === 'yes') {
             displayGuide();
+        } else if (isset($_GET['saved']) && $_GET['saved'] === 'yes') {
+            displayTable("movies/keep");
         } else {
-            displayTable(); ?>
+            displayTable("movies"); ?>
             <a href="?guide=yes">Upcoming...</a>
+            <a href="?saved=yes">Saved...</a>
         <?php } ?>
 
         <p id="footer">Now with <span>SubStation Alpha</span> support!</p>
