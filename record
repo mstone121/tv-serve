@@ -2,6 +2,7 @@
 
 if [ -e /tv/killswitch ]
 then
+    echo "Kill switch engaged, exiting..."
     exit
 fi
 
@@ -16,6 +17,7 @@ TITLE=false
 
 if [ -e /etc/record.conf ]
 then
+    echo "/etc/record.conf found, sourcing..."
     source /etc/record.conf
 fi
 
