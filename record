@@ -62,7 +62,7 @@ fi
 
 if [ $STEAL = true ]
 then
-    echo 'STEALING!!!!!!!!!!!!!!!!!!!';
+    echo 'Stealing...';
     pkill mplayer
 fi
 
