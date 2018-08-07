@@ -26,31 +26,31 @@ do
     key="$1"
 
     case $key in
-	-s|--steal)
-	    STEAL=true
-	    shift
-	    ;;
+        -s|--steal)
+            STEAL=true
+            shift
+            ;;
 
-	-c|--closed-captions)
-	    CC=true
-	    shift
-	    ;;
-	*)
-	    if [ $CHANNEL = false ]
-	    then
-		CHANNEL="$1"
-	    elif [ $TIME = false ]
-	    then
-		TIME="$1"
-	    elif [ $TITLE = false ]
-	    then
-		TITLE="$1"
-	    else
-		echo 'Too many arguments, exiting...'
-		exit 1
-	    fi
-	    shift
-	    ;;
+        -c|--closed-captions)
+            CC=true
+            shift
+            ;;
+        *)
+            if [ $CHANNEL = false ]
+            then
+                CHANNEL="$1"
+            elif [ $TIME = false ]
+            then
+                TIME="$1"
+            elif [ $TITLE = false ]
+            then
+                TITLE="$1"
+            else
+                echo 'Too many arguments, exiting...'
+                exit 1
+            fi
+            shift
+            ;;
     esac
 done
 
