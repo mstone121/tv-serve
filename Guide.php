@@ -131,8 +131,8 @@ class Guide {
         );
     }
 
-    function fetchListings() {
-        $postJson = json_encode(array_map(function($station) {
+    function fetchListings($postJson = FALSE) {
+        $postJson = $postJson ?: json_encode(array_map(function($station) {
             return array( "stationID" => $station->stationID );
         }, $this->stations));
 

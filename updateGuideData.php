@@ -38,11 +38,10 @@ if (!is_dir('guide-data')) { // Feels like the first time
         $programIDs = array_merge($programIDs, array_column($listing->programs, 'programID'));
     }
 
-    $chunks = array_chunk($programIDs, 5000);
-
     echo 'Fetching Program Data...' . PHP_EOL;
-    $programs = [];
+    $chunks = array_chunk($programIDs, 5000);
     $count = count($chunks);
+    $programs = [];
     foreach ($chunks as $index => $chunk) {
         echo "$index out of $count\r";
         $programs = array_merge($programs, $guide->fetchPrograms($chunk));
@@ -69,47 +68,108 @@ if (!is_dir('guide-data')) { // Feels like the first time
     }
 } else {
     $MD5sFile = json_decode(file_get_contents('guide-data/md5s.json'));
-    $MD5sApi = $guide->fetchMD5s();
+    $MD5sAPI = $guide->fetchMD5s();
+    file_put_contents('guide-data/md5s.json', json_encode($MD5sAPI));
+
     $recheckArray = [];
 
+    echo "Checking MD5s..." . PHP_EOL;
     foreach ($MD5sFile as $stationID => $dates) {
-        echo "Checking MD5s for station ID $stationID" . PHP_EOL;
         $datesToRecheck = [];
 
         foreach ($dates as $date => $data) {
-            if (!isset($MD5sApi->$stationID->$date)) { // date is in the past
-                unset($dates->$date);
+            if (!isset($MD5sAPI->$stationID->$date)) { // date is in the past
                 continue;
             }
 
-            if ($data->md5 !== $MD5sApi->$stationID->$date->md5) {
+            if ($data->md5 !== $MD5sAPI->$stationID->$date->md5) {
                 echo "    $date MD5 doesn't match" . PHP_EOL;
                 $datesToRecheck[] = $date;
             }
         }
 
-        $recheckArray[] = [
-            'stationID' => $stationID,
-            'dates' => $datesToRecheck
-        ];
+        if (count($datesToRecheck) > 0) {
+            $recheckArray[] = [
+                'stationID' => $stationID,
+                'dates' => $datesToRecheck
+            ];
+        }
     }
 
-    foreach ($MD5sApi as $stationID => $dates) {
+    echo 'Checking for new dates...' . PHP_EOL;
+    foreach ($MD5sAPI as $stationID => $dates) {
         $datesToRecheck = [];
 
         foreach ($dates as $date => $data) {
             if (!isset($MD5sFile->$stationID->$date)) {
+                echo "    Found new date $date" . PHP_EOL;
                 $datesToRecheck[] = $date;
             }
         }
 
-        $recheckArray[] = [
-            'stationID' => $stationID,
-            'dates' => $datesToRecheck
-        ];
+        if (count($datesToRecheck) > 0) {
+            $recheckArray[] = [
+                'stationID' => $stationID,
+                'dates' => $datesToRecheck
+            ];
+        }
     }
 
-    print_r($recheckArray);
+    if (count($recheckArray) === 0) {
+        echo 'No dates need updating. Exiting...';
+        exit;
+    }
+
+    $listings = $guide->fetchListings(json_encode($recheckArray));
+
+    echo 'Fetching Program IDs...' . PHP_EOL;
+    $stations = [];
+    $programIDs = [];
+    foreach ($listings as $listing) {
+        $programIDs = array_merge($programIDs, array_column($listing->programs, 'programID'));
+    }
+
+    echo 'Fetching Program Data...' . PHP_EOL;
+    $chunks = array_chunk($programIDs, 5000);
+    $count = count($chunks);
+    $programs = [];
+    foreach ($chunks as $index => $chunk) {
+        echo "$index out of $count\r";
+        $programs = array_merge($programs, $guide->fetchPrograms($chunk));
+    }
+
+    echo 'Reading sationID.json files...' . PHP_EOL;
+    $stations = [];
+    foreach (glob('guide-data/*.json') as $file) {
+        $stationID = substr($file, 11, -5);
+        $stations[$stationID] = json_decode(file_get_contents($file));
+    }
+
+    echo 'Updating station -> listing -> programs array...' . PHP_EOL;
+    $count = count($listings);
+    foreach ($listings as $index => $listing) {
+        echo "$index out of $count\r";
+        if (!isset($stations[$listing->stationID])) {
+            $stations[$listing->stationID] = [];
+        }
+
+        $programIDs = array_column($listing->programs, 'programID');
+        $date = $listing->metadata->startDate;
+        $stations[$listing->stationID]->$date = array_filter($programs, function($program)  use ($programIDs) {
+            return in_array($program->programID, $programIDs);
+        });
+    }
+
+    echo 'Writing stationID.json files...' . PHP_EOL;
+    foreach ($stations as $stationID => $dates) {
+        foreach ($dates as $date => $data) {
+            if (strtotime($date) < (time() - (7 * 24 * 60 * 60))) {
+                unset($dates->$date);
+            }
+        }
+
+        file_put_contents("guide-data/$stationID.json", json_encode($dates));
+    }
 }
 
 
