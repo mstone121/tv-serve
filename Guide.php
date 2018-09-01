@@ -120,6 +120,17 @@ class Guide {
         }
     }
 
+    function fetchMD5s() {
+        $postJson = json_encode(array_map(function($station) {
+            return [ "stationID" => $station->stationID ];
+        }, $this->stations));
+
+        return $this->apiRequest(
+            '/schedules/md5', 'POST',
+            [ 'json' => $postJson ]
+        );
+    }
+
     function fetchListings() {
         $postJson = json_encode(array_map(function($station) {
             return array( "stationID" => $station->stationID );
@@ -127,7 +138,21 @@ class Guide {
 
         return $this->apiRequest(
             '/schedules', 'POST',
-            [ 'json' => $postJson, ]
+            [ 'json' => $postJson ]
+        );
+    }
+
+    function fetchPrograms($programIDs) {
+        $postJson = json_encode($programIDs);
+
+        return $this->apiRequest(
+            '/programs', 'POST',
+            [
+                'json' => $postJson,
+                'headers' => [
+                    'Accept-Encoding: deflate'
+                ]
+            ]
         );
     }
 }
