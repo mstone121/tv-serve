@@ -179,7 +179,7 @@ class Guide {
     public static function displayStationTitle($station) {
         print '<h2>' . $station->callsign;
         if (isset($station->affiliate)) {
-            print $station->affiliate;
+            print '(' . $station->affiliate . ')';
         }
 
         print '</h2>';
