@@ -37,7 +37,7 @@ function displayTable($videoRoot) { ?>
 
 function displayGuide() { ?>
     <div id="guide"></div>
-    <script type="text/javascript" src="guide.js"></script>
+    <?php include('../search.php'); ?>
 <?php }
 
 function displayPlayer() { ?>
@@ -101,10 +101,17 @@ function displayPlayer() { ?>
         <!-- Styles -->
         <link href="https://fonts.googleapis.com/css?family=Geostar" rel="stylesheet">
         <link href="styles.css" rel="stylesheet">
+        <?php if (isset($_GET['guide']) && $_GET['guide'] === 'yes') {
+            require('../Guide.php');
+            Guide::printStyles();
+        } ?>
 
         <!-- Scripts -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="scripts.js"></script>
+        <?php if (isset($_GET['guide']) && $_GET['guide'] === 'yes') {
+            Guide::printJS();
+        } ?>
 
     </head>
 
