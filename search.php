@@ -37,7 +37,7 @@ foreach ($programs as $program) {
 $imageUris = $guide->fetchImageUris(array_keys($programMap));
 foreach ($imageUris as $images) {
     foreach ($images->data as $image) {
-        if ($image->category === 'Box Art') {
+        if (in_array($image->category, ['Box Art', 'Poster Art'])) {
             foreach ($programMap as $programID => $program) {
                 if (strpos($programID, $images->programID) === 0) {
                     if (strpos($image->uri, 'amazon') !== FALSE) {
