@@ -5,6 +5,11 @@ if ($_SERVER['REMOTE_HOST'] !== 'mosx') {
     exit;
 }
 
+if (strpos($_SERVER['REMOTE_ADDR'], '10.0.0')) {
+    // man, you're not even local
+    exit;
+}
+
 $config = json_decode(file_get_contents('../guideConfig.json'));
 
 $callsign = $_GET['callsign'];
@@ -14,13 +19,31 @@ $airTime = new DateTime($_GET['airTime']);
 $airTime->setTimezone(new DateTimeZone('America/Chicago'));
 $airTime = $airTime->format('h:i Y-m-d');
 
-$duration = $_GET['duration'];
+$duration = intval($_GET['duration']) + 60;
 
 $title = preg_replace('/[^A-Za-z0-9\s]/', '', $_GET['title']);
 $title = preg_replace('/\s+/', '_', $title);
 
-$execString = "at $airTime <<< 'record $station {$duration}s $title' 2>&1";
+//  <<< 'record $station {$duration}s $title' 2>&1
+$resource = proc_open("at $airTime", [ ['pipe', 'r'], ['pipe', 'w'], ['pipe', 'w'] ], $pipes);
 
-$output = shell_exec($execString);
-echo "Exec: $execString" . PHP_EOL;
-echo "Output: " . PHP_EOL . $output;
+if (is_resource($resource)) {
+    fwrite($pipes[0], "record $station {$duration}s $title");
+    fclose($pipes[0]);
+
+    $output = stream_get_contents($pipes[1]);
+    $error  = stream_get_contents($pipes[2]);
+
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+
+    $return_value = proc_close($process);
+
+    print json_encode([
+        'return_value' => $return_value,
+        'output' => $output,
+        'error'  => $error
+    ], JSON_PRETTY_PRINT);
+} else {
+    echo 'Creating resource failed:' . $resource;
+}
