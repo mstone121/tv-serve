@@ -192,7 +192,30 @@ class Guide {
         <?php if (isset($program->imageUri)) { ?>
             <img src="<?php echo $program->imageUri ?>" />
         <?php } ?>
-        <p class="description"><?php echo $program->descriptions->description100[0]->description ?></p>
+
+        <?php if (isset($program->descriptions->description100)) { ?>
+            <p class="description"><?php echo $program->descriptions->description100[0]->description ?></p>
+        <?php } else if (isset($program->descriptions->description1000)) { ?>
+            <p class="description"><?php echo $program->descriptions->description1000[0]->description ?></p>
+        <?php } ?>
+
+        <?php if (isset($program->cast)) { ?>
+            <ul class="cast">
+                <?php foreach ($program->cast as $cast) { ?>
+                    <?php if (intval($cast->billingOrder) > 5) continue; ?>
+                    <li><?php echo $cast->name ?></li>
+                <?php } ?>
+            </ul>
+        <?php } ?>
+
+        <?php if (isset($program->ratings)) { ?>
+            <ul class="ratings">
+                <?php foreach ($program->movie->qualityRating as $rating) { ?>
+                    <li><?php echo "{$rating->rating} out of {$rating->maxRating} ({$rating->ratingsBody} min:{$rating->minRating} inc:{$rating->increment})" ?></li>
+                <?php } ?>
+            </ul>
+        <?php } ?>
+
         <span class="button record-button"
                 onclick="recordProgram(<?php echo "'{$program->airDateTime}', '{$station->callsign}', {$program->duration}, '{$program->titles[0]->title120}'" ?>)"
         >Record</span>
@@ -217,6 +240,15 @@ class Guide {
 
          .program-box .description {
              float: right;
+             text-align: left;
+             padding-left: 10px;
+             width: 75%;
+         }
+
+         .program-box ul { /* .cast .ratings */
+             float: right;
+             list-style-type: none;
+             text-align: left;
              width: 75%;
          }
 
