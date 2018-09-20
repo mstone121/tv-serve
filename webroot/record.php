@@ -17,7 +17,7 @@ $station = $config->stationMap->$callsign;
 
 $airTime = new DateTime($_GET['airTime']);
 $airTime->setTimezone(new DateTimeZone('America/Chicago'));
-$airTime = $airTime->format('h:i Y-m-d');
+$airTime = $airTime->format('H:i Y-m-d');
 
 $duration = intval($_GET['duration']) + 60;
 
