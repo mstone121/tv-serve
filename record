@@ -81,3 +81,5 @@ if [ $CC = true ]
 then
     ffmpeg -y -f lavfi -i "movie=$MOVIES_DIR/$TITLE.ts[out+subcc]" "$MOVIES_DIR/${TITLE}_cc.srt" 2>&1 | tee "$LOG_DIR/${TITLE}_ffmpeg"
 fi
+
+rm $MOVIES_DIR/$TITLE.ts
