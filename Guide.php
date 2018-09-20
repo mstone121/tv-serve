@@ -208,7 +208,7 @@ class Guide {
             </ul>
         <?php } ?>
 
-        <?php if (isset($program->ratings)) { ?>
+        <?php if (isset($program->movie) && isset($program->movie->qualityRating)) { ?>
             <ul class="ratings">
                 <?php foreach ($program->movie->qualityRating as $rating) { ?>
                     <li><?php echo "{$rating->rating} out of {$rating->maxRating} ({$rating->ratingsBody} min:{$rating->minRating} inc:{$rating->increment})" ?></li>
