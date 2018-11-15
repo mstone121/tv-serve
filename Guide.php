@@ -9,7 +9,9 @@ class Guide {
     public $stations;
 
     function __construct($apiUrl, $username, $password, $stationMap = []) {
-        session_start();
+        if (php_sapi_name() !== 'cli') {
+            session_start();
+        }
 
         $this->apiUrl = $apiUrl;
         $this->username = $username;
