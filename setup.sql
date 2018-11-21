@@ -11,4 +11,29 @@ CREATE TABLE listings (
     air_time   DATETIME,
     duration   INTEGER NOT NULL,
     CONSTRAINT listings_primary PRIMARY KEY (station_id, program_id, air_time)
-)
+);
+
+CREATE TABLE programs (
+    program_id  VARCHAR,
+    resource_id INTEGER,
+    title       VARCHAR NOT NULL,
+    description TEXT,
+    show_type   VARCHAR NOT NULL,
+    CONSTRAINT programs_primary PRIMARY KEY (program_id)
+);
+
+CREATE TABLE casts (
+   program_id VARCHAR,
+   name       VARCHAR NOT NULL,
+   role       VARCHAR NOT NULL,
+   billing    INTEGER NOT NULL,
+   CONSTRAINT casts_primary     PRIMARY KEY (program_id, name, role)
+);
+
+CREATE TABLE crews (
+   program_id VARCHAR,
+   name       VARCHAR NOT NULL,
+   role       VARCHAR NOT NULL,
+   billing    INTEGER NOT NULL,
+   CONSTRAINT casts_primary     PRIMARY KEY (program_id, name, role)
+);
