@@ -23,6 +23,8 @@ class Guide {
         } else {
             $this->setToken();
         }
+
+        $this->setStations();
     }
 
     function apiRequest($url, $type = 'GET', $options = []) {

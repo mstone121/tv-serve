@@ -14,7 +14,6 @@ $guide = new Guide(
     $config->credentials->password,
     $config->stationMap
 );
-$guide->setStations();
 
 echo "Setting up database interface..." . PHP_EOL;
 require("ListingsDatabase.php");
@@ -48,5 +47,4 @@ foreach ($chunks as $index => $chunk) {
 }
 
 echo "Inserting Programs..." . PHP_EOL;
-
 $db->insertPrograms($programs);
