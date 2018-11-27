@@ -7,6 +7,7 @@ class ListingsDatabase {
         $this->db = new PDO("sqlite:listings.db");
     }
 
+    // DB Interface
     function exec($query) {
         $result = $this->db->exec($query);
         if ($result === FALSE) {
@@ -15,6 +16,17 @@ class ListingsDatabase {
         }
     }
 
+    function select($query) {
+        $result = $this->db->query($query);
+        if ($result === FALSE) {
+            print_r($this->db->errorInfo());
+            exit;
+        }
+
+        return $result;
+    }
+
+    // inserts
     function insertMD5s($md5s) {
         $query = "INSERT INTO md5s (station_id, date, md5) VALUES" . PHP_EOL;
 
@@ -133,6 +145,11 @@ class ListingsDatabase {
         $this->exec($pQuery);
         $this->exec($cQuery);
         $this->exec($rQuery);
+    }
+
+    // Fetchs
+    function fetchMD5s() {
+        return $this->select("SELECT * FROM md5s");
     }
 
     // Utils
