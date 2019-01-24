@@ -8,15 +8,16 @@ class Guide {
     public $apiUrl;
     public $stations;
 
-    function __construct($apiUrl, $username, $password, $stationMap = []) {
+    function __construct($guideConfig) {
         if (php_sapi_name() !== 'cli') {
             session_start();
         }
 
-        $this->apiUrl = $apiUrl;
-        $this->username = $username;
-        $this->password = sha1($password);
-        $this->stationMap = $stationMap;
+        $this->apiUrl = $guideConfig->apiUrl;
+        $this->username = $guideConfig->credentials->username;
+        $this->password = sha1($guideConfig->credentials->password);
+        $this->lineupUrl = $guideConfig->lineupUrl;
+        $this->stationMap = $guideConfig->stationMap;
 
         if (isset($_SESSION['token'])) {
             $this->token = $_SESSION['token'];
@@ -107,7 +108,7 @@ class Guide {
 
     function setStations() {
         $stations = $this->apiRequest(
-            '/lineups/USA-OTA-60614', 'GET',
+            $this->lineupUrl, 'GET',
             [ 'headers' => [ 'Accept-Encoding: deflate' ] ]
         )->stations;
 
