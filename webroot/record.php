@@ -5,7 +5,7 @@ if ($_SERVER['REMOTE_HOST'] !== 'mosx') {
     exit;
 }
 
-if (strpos($_SERVER['REMOTE_ADDR'], '10.0.0')) {
+if (strpos($_SERVER['REMOTE_ADDR'], '10.0.0') !== 0) {
     // man, you're not even local
     exit;
 }
