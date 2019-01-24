@@ -7,13 +7,7 @@ if (!is_file('listings.db')) {
 
 echo "Setting up guide interface..." . PHP_EOL;
 require("Guide.php");
-$config = json_decode(file_get_contents("guideConfig.json"));
-$guide = new Guide(
-    "https://json.schedulesdirect.org/20141201",
-    $config->credentials->username,
-    $config->credentials->password,
-    $config->stationMap
-);
+$guide = new Guide(json_decode(file_get_contents('guideConfig.json')));
 
 echo "Setting up database interface..." . PHP_EOL;
 require("ListingsDatabase.php");
