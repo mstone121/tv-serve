@@ -1,3 +1,5 @@
+PRAGMA foreign_keys = ON;
+
 CREATE TABLE md5s (
     station_id INTEGER,
     date       DATE,
@@ -10,7 +12,7 @@ CREATE TABLE listings (
     program_id VARCHAR,
     air_time   DATETIME,
     duration   INTEGER NOT NULL,
-    CONSTRAINT listings_primary PRIMARY KEY (station_id, program_id, air_time)
+    CONSTRAINT listings_primary PRIMARY KEY (station_id, air_time)
 );
 
 CREATE TABLE programs (
@@ -28,6 +30,7 @@ CREATE TABLE casts (
    role       VARCHAR NOT NULL,
    billing    INTEGER NOT NULL,
    CONSTRAINT casts_primary     PRIMARY KEY (program_id, name, role)
+   CONSTRAINT casts_foreign     FOREIGN KEY (program_id) REFERENCES programs(program_id) ON DELETE CASCADE
 );
 
 CREATE TABLE crews (
@@ -35,5 +38,6 @@ CREATE TABLE crews (
    name       VARCHAR NOT NULL,
    role       VARCHAR NOT NULL,
    billing    INTEGER NOT NULL,
-   CONSTRAINT casts_primary     PRIMARY KEY (program_id, name, role)
+   CONSTRAINT crews_primary     PRIMARY KEY (program_id, name, role)
+   CONSTRAINT crews_foreign     FOREIGN KEY (program_id) REFERENCES programs(program_id) ON DELETE CASCADE
 );
