@@ -4,7 +4,7 @@ class ListingsDatabase {
     private $db;
 
     function __construct() {
-        $this->db = new PDO("sqlite:listings.db");
+        $this->db = new PDO("sqlite:/tv/listings.db");
     }
 
     // DB Interface
@@ -14,6 +14,7 @@ class ListingsDatabase {
             print_r($this->db->errorInfo());
             exit;
         }
+        return $result;
     }
 
     function select($query) {
@@ -150,6 +151,34 @@ class ListingsDatabase {
     // Fetchs
     function fetchMD5s() {
         return $this->select("SELECT * FROM md5s");
+    }
+
+    // Deletes
+    function deleteMD5s($deletes) {
+        $query = "DELETE FROM md5s WHERE";
+
+        foreach ($deletes as $delete) {
+            $query .= PHP_EOL . "(station_id = {$delete['station_id']} AND date = '{$delete['date']}') OR";
+        }
+
+        self::stripTrailing($query);
+        $this->exec($query);
+    }
+
+    function deleteListings($deletes) {
+        $query = "DELETE FROM listings WHERE";
+
+        foreach ($deletes as $delete) {
+            $query .= PHP_EOL . "(station_id = {$delete['station_id']} AND date(air_time) = '{$delete['date']}') OR";
+        }
+
+        self::stripTrailing($query);
+
+        $this->exec($query);
+    }
+
+    function deleteOrphanedPrograms() {
+        $this->exec("DELETE FROM programs WHERE program_id NOT IN (SELECT program_id FROM listings);");
     }
 
     // Utils
