@@ -10,8 +10,6 @@ $guide = new Guide(
     $config->stationMap
 );
 
-$guide->setStations();
-
 if (!isset($_GET['date'])) {
     $date = date('Y-m-d');
 } else {

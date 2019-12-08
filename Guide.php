@@ -8,19 +8,24 @@ class Guide {
     public $apiUrl;
     public $stations;
 
-    function __construct($apiUrl, $username, $password, $stationMap = []) {
-        session_start();
+    function __construct($guideConfig) {
+        if (php_sapi_name() !== 'cli') {
+            session_start();
+        }
 
-        $this->apiUrl = $apiUrl;
-        $this->username = $username;
-        $this->password = sha1($password);
-        $this->stationMap = $stationMap;
+        $this->apiUrl = $guideConfig->apiUrl;
+        $this->username = $guideConfig->credentials->username;
+        $this->password = sha1($guideConfig->credentials->password);
+        $this->lineupUrl = $guideConfig->lineupUrl;
+        $this->stationMap = $guideConfig->stationMap;
 
         if (isset($_SESSION['token'])) {
             $this->token = $_SESSION['token'];
         } else {
             $this->setToken();
         }
+
+        $this->setStations();
     }
 
     function apiRequest($url, $type = 'GET', $options = []) {
@@ -103,7 +108,7 @@ class Guide {
 
     function setStations() {
         $stations = $this->apiRequest(
-            '/lineups/USA-OTA-60614', 'GET',
+            $this->lineupUrl, 'GET',
             [ 'headers' => [ 'Accept-Encoding: deflate' ] ]
         )->stations;
 
@@ -208,7 +213,7 @@ class Guide {
             </ul>
         <?php } ?>
 
-        <?php if (isset($program->ratings)) { ?>
+        <?php if (isset($program->movie) && isset($program->movie->qualityRating)) { ?>
             <ul class="ratings">
                 <?php foreach ($program->movie->qualityRating as $rating) { ?>
                     <li><?php echo "{$rating->rating} out of {$rating->maxRating} ({$rating->ratingsBody} min:{$rating->minRating} inc:{$rating->increment})" ?></li>
